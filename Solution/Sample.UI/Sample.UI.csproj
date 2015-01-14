@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Dev</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A68F617F-595E-4FC4-96AC-93A36CCB3A4C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WKCA</RootNamespace>
+    <AssemblyName>Sample.UI</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|x86'">
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DevType>pdbonly</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stg|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Solution\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TaxprepAddinAPI">
+      <HintPath>..\..\3rdParty\Wolters Kluwer\AddInEngine\TaxprepAddinAPI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdvertisingButton.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdvertisingButton.designer.cs">
+      <DependentUpon>AdvertisingButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AppProperiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AppProperiesForm.Designer.cs">
+      <DependentUpon>AppProperiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Attachments.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Attachments.designer.cs">
+      <DependentUpon>Attachments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CellPropertieForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CellPropertieForm.Designer.cs">
+      <DependentUpon>CellPropertieForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientFilePropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientFilePropertiesForm.Designer.cs">
+      <DependentUpon>ClientFilePropertiesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ClientLettersDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ClientLettersDemo.Designer.cs">
+      <DependentUpon>ClientLettersDemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDemo.Designer.cs">
+      <DependentUpon>ConfigurationDemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CursorDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CursorDemo.Designer.cs">
+      <DependentUpon>CursorDemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Diagnotics.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Diagnotics.Designer.cs">
+      <DependentUpon>Diagnotics.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenClientFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenClientFile.designer.cs">
+      <DependentUpon>OpenClientFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpenFileSimple.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryComplexDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="QueryComplexDataForm.Designer.cs">
+      <DependentUpon>QueryComplexDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ReturnProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ReturnProperties.Designer.cs">
+      <DependentUpon>ReturnProperties.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UFLDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UFLDemo.Designer.cs">
+      <DependentUpon>UFLDemo.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="AdvertisingButton.resx">
+      <DependentUpon>AdvertisingButton.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AppProperiesForm.resx">
+      <DependentUpon>AppProperiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Attachments.resx">
+      <DependentUpon>Attachments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CellPropertieForm.resx">
+      <DependentUpon>CellPropertieForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientFilePropertiesForm.resx">
+      <DependentUpon>ClientFilePropertiesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ClientLettersDemo.resx">
+      <DependentUpon>ClientLettersDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConfigurationDemo.resx">
+      <DependentUpon>ConfigurationDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CursorDemo.resx">
+      <DependentUpon>CursorDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Diagnotics.resx">
+      <DependentUpon>Diagnotics.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenClientFile.resx">
+      <DependentUpon>OpenClientFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="QueryComplexDataForm.resx">
+      <DependentUpon>QueryComplexDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReturnProperties.resx">
+      <DependentUpon>ReturnProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UFLDemo.resx">
+      <DependentUpon>UFLDemo.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
