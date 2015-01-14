@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Dev</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{29683531-5E1B-4267-B187-81FDDFBF9816}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WKCA</RootNamespace>
+    <AssemblyName>UnitTest.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\UnitTest.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|x86'">
+    <OutputPath>..\..\bin\$(Configuration)\UnitTest.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DevType>pdbonly</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stg|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\UnitTest.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TaxprepAddinAPI">
+      <HintPath>..\..\3rdParty\Wolters Kluwer\AddInEngine\TaxprepAddinAPI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Test\ClientFileEvents.cs" />
+    <Compile Include="Test\ClientFileManager.cs" />
+    <Compile Include="Test\ClientFileTests.cs" />
+    <Compile Include="Test\ConfigurationTests.cs" />
+    <Compile Include="Test\ClientLetters.cs" />
+    <Compile Include="Test\TaxReturn.cs" />
+    <Compile Include="Test\UFL.cs" />
+    <Compile Include="Test\DataBaseEnvEvents.cs" />
+    <Compile Include="Test\DiagnosticTests.cs" />
+    <Compile Include="Test\MenuTests.cs" />
+    <Compile Include="Test\ModuleManagerTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\TaxApplicationTests.cs" />
+    <Compile Include="TestHost.cs" />
+    <Compile Include="Test\UnitTestDemo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commons\WKCA.AddIn\WKCA.AddIn.csproj">
+      <Project>{d4fcda95-0fa5-40db-8065-82eaa21beb79}</Project>
+      <Name>WKCA.AddIn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTest.Host\UnitTest.Host.csproj">
+      <Project>{f0926eab-40f8-4c6c-be51-0364f14153e9}</Project>
+      <Name>UnitTest.Host</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

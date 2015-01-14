@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Dev</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A415C9E9-7199-42F7-941D-BBA0917066F8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WKCA</RootNamespace>
+    <AssemblyName>HelloWorld.AddIn</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\HelloWorld\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|x86'">
+    <OutputPath>..\..\bin\$(Configuration)\HelloWorld\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DevType>pdbonly</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stg|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\HelloWorld\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TaxprepAddinAPI">
+      <HintPath>..\..\3rdParty\Wolters Kluwer\AddInEngine\TaxprepAddinAPI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddinInstance.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commons\WKCA.AddIn\WKCA.AddIn.csproj">
+      <Project>{d4fcda95-0fa5-40db-8065-82eaa21beb79}</Project>
+      <Name>WKCA.AddIn</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>setlocal
+
+set AddinShortName=HelloWorld.AddIn
+set AddinName=Hello World AddIn
+set AddinGuid=26A2ECE8-ED75-47B9-8797-32B3C0D227A7
+set AddinVersion=1.0.0.0
+set AddinDLL=$(TargetPath)
+set AddinClassName=WKCA.AddinInstance
+
+
+set AddinReg=$(ProjectDir)..\..\bin\$(Configuration)\Tool\AddinReg.exe
+set proxy=$(TargetDir)Proxy.dll
+set loader=$(TargetDir)Loader.dll
+set T1_2014=T1 Taxprep 2014
+set T1_2015=T1 Taxprep 2015
+
+
+call "%25AddinReg%25" -t"%25T1_2014%25" -l -p -k"%25AddinShortName%25" -d"%25AddinDLL%25" --proxyDllPath "%25proxy%25" --addinShortName %25AddinShortName%25 --addinName "%25AddinName%25" --addinGuid {%25AddinGuid%25} --addinVersion %25AddinVersion%25 --loaderDllPath "%25loader%25" --addinClassName %25AddinClassName%25 --fpuCW default
+
+call "%25AddinReg%25" -t"%25T1_2015%25" -l -p -k"%25AddinShortName%25" -d"%25AddinDLL%25" --proxyDllPath "%25proxy%25" --addinShortName %25AddinShortName%25 --addinName "%25AddinName%25" --addinGuid {%25AddinGuid%25} --addinVersion %25AddinVersion%25 --loaderDllPath "%25loader%25" --addinClassName %25AddinClassName%25 --fpuCW default
+
+</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -command "gci '$(ProjectDir)..\..\3rdParty\Wolters Kluwer\' | Unblock-File"
+
+xcopy /y "$(ProjectDir)..\..\3rdParty\Wolters Kluwer\Loader\Loader.dll" "$(TargetDir)"
+xcopy /y "$(ProjectDir)..\..\3rdParty\Wolters Kluwer\Proxy\Proxy.dll" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
