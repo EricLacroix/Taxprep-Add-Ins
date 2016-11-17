@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Dev</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E18B683F-B255-4B63-A627-A85429650F73}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WKCA</RootNamespace>
+    <AssemblyName>Sample.AddIn</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|x86'">
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+    <DevType>pdbonly</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stg|x86'">
+    <DevSymbols>true</DevSymbols>
+    <OutputPath>..\..\bin\$(Configuration)\Sample.AddIn\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DevType>full</DevType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Solution\packages\NLog.4.3.11\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TaxprepAddinAPI">
+      <HintPath>..\..\3rdParty\Wolters Kluwer\AddInEngine\TaxprepAddinAPI.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AddinInstance.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Commons\WKCA.AddIn\WKCA.AddIn.csproj">
+      <Project>{d4fcda95-0fa5-40db-8065-82eaa21beb79}</Project>
+      <Name>WKCA.AddIn</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sample.UI\Sample.UI.csproj">
+      <Project>{a68f617f-595e-4fc4-96ac-93a36ccb3a4c}</Project>
+      <Name>Sample.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="../packages/UnmanagedExports.1.2.6/tools/RGiesecke.DllExport.targets" Condition="Exists('../packages/UnmanagedExports.1.2.6/tools/RGiesecke.DllExport.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>setlocal
+
+set AddinShortName=Sample.AddIn
+set AddinName=Sample Add-In
+set AddinGuid=8C6E1349-8287-42C7-83ED-6AAE51DE11A5
+set AddinVersion=1.0.0.0
+set AddinDLL=$(TargetPath)
+set AddinClassName=WKCA.AddinInstance
+
+
+set AddinReg=$(ProjectDir)..\..\bin\$(Configuration)\Tool\AddinReg.exe
+set proxy=$(TargetDir)Proxy.dll
+set loader=$(TargetDir)Loader.dll
+set T1_2014=T1 Taxprep 2014
+set T1_2015=T1 Taxprep 2015
+
+
+call "%25AddinReg%25" -t"%25T1_2014%25" -l -p -k"%25AddinShortName%25" -d"%25AddinDLL%25" --proxyDllPath "%25proxy%25" --addinShortName %25AddinShortName%25 --addinName "%25AddinName%25" --addinGuid {%25AddinGuid%25} --addinVersion %25AddinVersion%25 --loaderDllPath "%25loader%25" --addinClassName %25AddinClassName%25 --fpuCW default
+
+call "%25AddinReg%25" -t"%25T1_2015%25" -l -p -k"%25AddinShortName%25" -d"%25AddinDLL%25" --proxyDllPath "%25proxy%25" --addinShortName %25AddinShortName%25 --addinName "%25AddinName%25" --addinGuid {%25AddinGuid%25} --addinVersion %25AddinVersion%25 --loaderDllPath "%25loader%25" --addinClassName %25AddinClassName%25 --fpuCW default</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -command "gci '$(ProjectDir)..\..\3rdParty\Wolters Kluwer\' | Unblock-File"
+
+xcopy /y "$(ProjectDir)..\..\3rdParty\Wolters Kluwer\Loader\Loader.dll" "$(TargetDir)"
+xcopy /y "$(ProjectDir)..\..\3rdParty\Wolters Kluwer\Proxy\Proxy.dll" "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
