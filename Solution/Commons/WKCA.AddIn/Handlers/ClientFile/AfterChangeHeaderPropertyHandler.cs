@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.ClientFile
 
         public void Execute(string aClientFileHeaderKey)
         {
-            
             try
             {
                 if (_onExecute != null)

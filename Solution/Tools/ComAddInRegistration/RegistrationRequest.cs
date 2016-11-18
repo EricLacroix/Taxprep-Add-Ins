@@ -18,10 +18,10 @@
 
         public static RegistrationRequest GetHelpResult()
         {
-            return new RegistrationRequest()
+            return new RegistrationRequest
             {
                 RegistrationAction = RegistrationAction.Help
             };
         }
     }
- }
+}

@@ -42,7 +42,8 @@ namespace WKCA.Com.Utils
 
         private void RegisterLocalServerType(Type t, string hostProcessPath)
         {
-            var versionSpecificGuid = _helper.CreateApplicationSpecificGuidFromTemplate(t.GUID.ToString(), Path.GetFileName(hostProcessPath));
+            var versionSpecificGuid = _helper.CreateApplicationSpecificGuidFromTemplate(t.GUID.ToString(),
+                Path.GetFileName(hostProcessPath));
             var progId = _helper.GetProgId(hostProcessPath, t.Name);
 
             DeleteRegistryKeyIfExists(progId);
@@ -57,10 +58,12 @@ namespace WKCA.Com.Utils
                 }
             }
 
-            using (var keyCLSID = Registry.ClassesRoot.CreateSubKey(string.Format(@"CLSID\{0}", versionSpecificGuid.ToString("B"))))
+            using (
+                var keyCLSID =
+                    Registry.ClassesRoot.CreateSubKey(string.Format(@"CLSID\{0}", versionSpecificGuid.ToString("B"))))
             {
                 keyCLSID.SetValue("", progId);
-                using (RegistryKey subkey = keyCLSID.CreateSubKey("LocalServer32"))
+                using (var subkey = keyCLSID.CreateSubKey("LocalServer32"))
                 {
                     subkey.SetValue("", hostProcessPath, RegistryValueKind.String);
                 }
@@ -69,7 +72,8 @@ namespace WKCA.Com.Utils
 
         private void UnregisterLocalServerType(Type t, string hostProcessPath)
         {
-            var versionSpecificGuid = _helper.CreateApplicationSpecificGuidFromTemplate(t.GUID.ToString(), Path.GetFileName(hostProcessPath));
+            var versionSpecificGuid = _helper.CreateApplicationSpecificGuidFromTemplate(t.GUID.ToString(),
+                Path.GetFileName(hostProcessPath));
             var progId = _helper.GetProgId(hostProcessPath, t.Name);
             DeleteRegistryKeyIfExists(progId);
             DeleteRegistryKeyIfExists(string.Format(@"CLSID\{0}", versionSpecificGuid.ToString("B")));

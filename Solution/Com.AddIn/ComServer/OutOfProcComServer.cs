@@ -31,28 +31,18 @@ using System.Threading;
 
 namespace Com.AddIn.ComServer
 {
-    sealed internal class OutOfProcComServer
+    internal sealed class OutOfProcComServer
     {
-        #region Singleton Pattern
-
-        private OutOfProcComServer()
-        {
-        }
-
-        private static readonly OutOfProcComServer _instance = new OutOfProcComServer();
-        public static OutOfProcComServer Instance => _instance;
-
-        #endregion
-
-
-       // The lock count (the number of active COM objects) in the server
-        private int _nLockCnt = 0;
-        
         private uint _cookieComAccessProvider;
+
+
+        // The lock count (the number of active COM objects) in the server
+        private int _nLockCnt;
+
         /// <summary>
-        /// RegisterComClasses is responsible for registering the COM class 
-        /// factories for the COM classes to be exposed from the server, and 
-        /// initializing the key member variables of the COM server (e.g. _nLockCnt).
+        ///     RegisterComClasses is responsible for registering the COM class
+        ///     factories for the COM classes to be exposed from the server, and
+        ///     initializing the key member variables of the COM server (e.g. _nLockCnt).
         /// </summary>
         public void RegisterComClasses()
         {
@@ -62,9 +52,9 @@ namespace Com.AddIn.ComServer
 
             var clsidComAccessProvider = ComIds.CLSID_ComAccessProvider;
             var hResult = ComNative.CoRegisterClassObject(
-                ref clsidComAccessProvider,                 // CLSID to be registered
-                new ComAccessProviderClassFactory(),   // Class factory
-                CLSCTX.LOCAL_SERVER,                // Context to run
+                ref clsidComAccessProvider, // CLSID to be registered
+                new ComAccessProviderClassFactory(), // Class factory
+                CLSCTX.LOCAL_SERVER, // Context to run
                 REGCLS.MULTIPLEUSE | REGCLS.SUSPENDED,
                 out _cookieComAccessProvider);
             if (hResult != 0)
@@ -84,7 +74,7 @@ namespace Com.AddIn.ComServer
                 {
                     ComNative.CoRevokeClassObject(_cookieComAccessProvider);
                 }
-                
+
                 // Revoke the registration of other classes
                 // ...
 
@@ -97,8 +87,8 @@ namespace Com.AddIn.ComServer
         }
 
         /// <summary>
-        /// UnRegisterComClasses is called to revoke the registration of the COM 
-        /// classes exposed from the server, and perform the cleanups.
+        ///     UnRegisterComClasses is called to revoke the registration of the COM
+        ///     classes exposed from the server, and perform the cleanups.
         /// </summary>
         public void UnRegisterComClasses()
         {
@@ -115,9 +105,9 @@ namespace Com.AddIn.ComServer
             // ...
         }
 
-      
+
         /// <summary>
-        /// Increase the lock count
+        ///     Increase the lock count
         /// </summary>
         /// <returns>The new lock count after the increment</returns>
         /// <remarks>The method is thread-safe.</remarks>
@@ -127,25 +117,35 @@ namespace Com.AddIn.ComServer
         }
 
         /// <summary>
-        /// Decrease the lock count. When the lock count drops to zero, post 
-        /// the WM_QUIT message to the message loop in the main thread to 
-        /// shut down the COM server.
+        ///     Decrease the lock count. When the lock count drops to zero, post
+        ///     the WM_QUIT message to the message loop in the main thread to
+        ///     shut down the COM server.
         /// </summary>
         /// <returns>The new lock count after the increment</returns>
         public int Unlock()
         {
-            int nRet = Interlocked.Decrement(ref _nLockCnt);
+            var nRet = Interlocked.Decrement(ref _nLockCnt);
 
             return nRet;
         }
 
         /// <summary>
-        /// Get the current lock count.
+        ///     Get the current lock count.
         /// </summary>
         /// <returns></returns>
         public int GetLockCount()
         {
             return _nLockCnt;
         }
+
+        #region Singleton Pattern
+
+        private OutOfProcComServer()
+        {
+        }
+
+        public static OutOfProcComServer Instance { get; } = new OutOfProcComServer();
+
+        #endregion
     }
 }

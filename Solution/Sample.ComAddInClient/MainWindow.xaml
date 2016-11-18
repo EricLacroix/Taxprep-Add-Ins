@@ -8,23 +8,23 @@
         ResizeMode="CanMinimize"
         Title="Sample COM Add-In Client" Height="250" Width="455" MinWidth="455" MinHeight="150">
     <Window.Resources>
-        <viewModel:MainViewModel x:Key="vm"/>
+        <viewModel:MainViewModel x:Key="vm" />
     </Window.Resources>
     <Grid DataContext="{StaticResource vm}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Margin="5">
-            <TextBlock  Padding="5">TaxPrep exe file name</TextBlock>
-            <TextBox  Text="{Binding Path=TaxPrepFileName}" MinWidth="100" Padding="5" Margin="10 0"></TextBox>
+            <TextBlock Padding="5">TaxPrep exe file name</TextBlock>
+            <TextBox Text="{Binding Path=TaxPrepFileName}" MinWidth="100" Padding="5" Margin="10 0" />
             <Button Command="{Binding ConnectComAddIn}" Padding="5">Connect to TaxPrep COM AddIn</Button>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5">
-            <TextBlock  Padding="5">Status</TextBlock>
-            <TextBlock  Text="{Binding Path=Status}" MinWidth="100" Padding="5" Margin="10 0"></TextBlock>
+            <TextBlock Padding="5">Status</TextBlock>
+            <TextBlock Text="{Binding Path=Status}" MinWidth="100" Padding="5" Margin="10 0" />
         </StackPanel>
-        <TextBlock Grid.Row="2" Text="{Binding ExceptionMessage}" Padding="5" TextWrapping="Wrap"></TextBlock>
+        <TextBlock Grid.Row="2" Text="{Binding ExceptionMessage}" Padding="5" TextWrapping="Wrap" />
     </Grid>
 </Window>

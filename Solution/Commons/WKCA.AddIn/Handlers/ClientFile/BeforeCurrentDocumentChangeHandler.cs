@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.ClientFile
 
         public void Execute(IAppTaxDocument OldDocument, IAppTaxDocument NewDocument)
         {
-            
             try
             {
                 if (_onExecute != null)

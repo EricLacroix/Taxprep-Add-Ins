@@ -7,15 +7,15 @@ using WKCA.UnitTest.Test;
 
 namespace UnitTest.ComAddIn
 {
-    class Program
+    internal class Program
     {
         private static IAppInstance _appInstance;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Starting COM AddIn unit test");
             GetTaxPrepAppUsingGuid();
-            var lMenuService = (IAppMenuService)_appInstance;
+            var lMenuService = (IAppMenuService) _appInstance;
 
             var lRootMenu = lMenuService.AddRootMenu("Com AddIn Unit Test");
             lRootMenu.Visible = true;
@@ -41,7 +41,7 @@ namespace UnitTest.ComAddIn
             dynamic comAccessProvider = Activator.CreateInstance(type);
 
             dynamic appInstance = comAccessProvider.GetAppInstance();
-            _appInstance = (IAppInstance)appInstance;
+            _appInstance = (IAppInstance) appInstance;
         }
     }
 }

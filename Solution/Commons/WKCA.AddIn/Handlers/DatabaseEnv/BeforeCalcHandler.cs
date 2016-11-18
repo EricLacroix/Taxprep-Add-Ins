@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.DatabaseEnv
 
         public void Execute(IAppDocReturn aReturn)
         {
-
             try
             {
                 if (_onExecute != null)

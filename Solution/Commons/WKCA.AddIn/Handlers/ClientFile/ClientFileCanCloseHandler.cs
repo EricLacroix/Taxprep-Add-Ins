@@ -6,7 +6,13 @@ namespace WKCA.AddIn.Handlers.ClientFile
     public class ClientFileCanCloseHandler : IAddinCanCloseEventHandler
     {
         public delegate bool ExecuteDelegate(IAppClientFile aClientFile);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public ClientFileCanCloseHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinCanCloseEventHandler
 
@@ -28,10 +34,5 @@ namespace WKCA.AddIn.Handlers.ClientFile
         }
 
         #endregion
-
-        public ClientFileCanCloseHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

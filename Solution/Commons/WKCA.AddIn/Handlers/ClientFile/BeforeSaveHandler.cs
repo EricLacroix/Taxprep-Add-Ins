@@ -17,7 +17,7 @@ namespace WKCA.AddIn.Handlers.ClientFile
         #region IAddinBeforeClientFileSaveHandler
 
         public void Execute(string aFileName, out bool aAccept)
-        {     
+        {
             try
             {
                 if (_onExecute != null)

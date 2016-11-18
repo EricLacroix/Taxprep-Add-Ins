@@ -6,7 +6,13 @@ namespace WKCA.AddIn.Handlers.Diagnostic
     public class DiagnosticClickHandler : IAddinDiagnosticClickHandler
     {
         public delegate void ExecuteDelegate(IAppDocReturn aDocReturn, int ADiagGroup, string ADiagName);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public DiagnosticClickHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinNotifyHandler
 
@@ -27,10 +33,5 @@ namespace WKCA.AddIn.Handlers.Diagnostic
         }
 
         #endregion
-
-        public DiagnosticClickHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

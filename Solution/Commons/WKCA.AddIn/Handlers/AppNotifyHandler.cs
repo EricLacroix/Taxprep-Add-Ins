@@ -28,9 +28,8 @@ namespace WKCA.AddIn.Handlers
                 if (!UnhandledExceptionManager.HandleException(this, e))
                 {
                     throw;
-                } 
+                }
             }
-            
         }
 
         #endregion

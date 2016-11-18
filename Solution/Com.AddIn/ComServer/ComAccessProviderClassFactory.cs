@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace Com.AddIn.ComServer
 {
     /// <summary>
-    /// Class factory for the class  ComAccessProviderClassFactory.
+    ///     Class factory for the class  ComAccessProviderClassFactory.
     /// </summary>
     internal class ComAccessProviderClassFactory : StandardOleMarshalObject, IClassFactory
     {
@@ -18,10 +18,11 @@ namespace Com.AddIn.ComServer
                 Marshal.ThrowExceptionForHR(ComNative.CLASS_E_NOAGGREGATION);
             }
 
-            if (riid == ComIds.CLSID_ComAccessProvider || riid == new Guid(ComNative.IID_IDispatch) || riid == new Guid(ComNative.IID_IUnknown))
+            if (riid == ComIds.CLSID_ComAccessProvider || riid == new Guid(ComNative.IID_IDispatch) ||
+                riid == new Guid(ComNative.IID_IUnknown))
             {
                 // Create the instance of the .NET object
-                ppvObject = Marshal.GetComInterfaceForObject(new ComAccessProvider(), typeof(IComAccessProvider));
+                ppvObject = Marshal.GetComInterfaceForObject(new ComAccessProvider(), typeof (IComAccessProvider));
             }
             else
             {
@@ -29,7 +30,7 @@ namespace Com.AddIn.ComServer
                 Marshal.ThrowExceptionForHR(ComNative.E_NOINTERFACE);
             }
 
-            return ComNative.S_OK; 
+            return ComNative.S_OK;
         }
 
         public int LockServer(bool fLock)

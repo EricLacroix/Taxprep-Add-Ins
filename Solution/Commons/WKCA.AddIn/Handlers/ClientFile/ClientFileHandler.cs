@@ -6,13 +6,18 @@ namespace WKCA.AddIn.Handlers.ClientFile
     public class ClientFileHandler : IAddinClientFileEventHandler
     {
         public delegate void ExecuteDelegate(IAppClientFile aClientFile);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public ClientFileHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinClientFileEventHandler
 
         public void Execute(IAppClientFile aClientFile)
         {
-            
             try
             {
                 if (_onExecute != null)
@@ -28,10 +33,5 @@ namespace WKCA.AddIn.Handlers.ClientFile
         }
 
         #endregion
-
-        public ClientFileHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

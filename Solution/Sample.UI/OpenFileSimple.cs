@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Windows.Forms;
 
 namespace WKCA.Sample
 {
@@ -9,16 +6,13 @@ namespace WKCA.Sample
     {
         public static string Execute()
         {
-            var od = new System.Windows.Forms.OpenFileDialog();
+            var od = new OpenFileDialog();
             od.DefaultExt = ".114";
-            if (od.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (od.ShowDialog() == DialogResult.OK)
             {
                 return od.FileName;
             }
-            else
-            {
-                return "";
-            }
+            return "";
         }
     }
 }

@@ -23,48 +23,78 @@ namespace Com.AddIn.ComServer
     internal class ComNative
     {
         /// <summary>
-        /// CoInitializeEx() can be used to set the apartment model of individual 
-        /// threads.
+        ///     Interface Id of IClassFactory
+        /// </summary>
+        public const string IID_IClassFactory = "00000001-0000-0000-C000-000000000046";
+
+        /// <summary>
+        ///     Interface Id of IUnknown
+        /// </summary>
+        public const string IID_IUnknown = "00000000-0000-0000-C000-000000000046";
+
+        /// <summary>
+        ///     Interface Id of IDispatch
+        /// </summary>
+        public const string IID_IDispatch = "00020400-0000-0000-C000-000000000046";
+
+        /// <summary>
+        ///     Class does not support aggregation (or class object is remote)
+        /// </summary>
+        public const int CLASS_E_NOAGGREGATION = unchecked((int) 0x80040110);
+
+        /// <summary>
+        ///     No such interface supported
+        /// </summary>
+        public const int E_NOINTERFACE = unchecked((int) 0x80004002);
+
+        /// <summary>
+        ///     No such interface supported
+        /// </summary>
+        public const int S_OK = 0;
+
+        /// <summary>
+        ///     CoInitializeEx() can be used to set the apartment model of individual
+        ///     threads.
         /// </summary>
         /// <param name="pvReserved">Must be NULL</param>
         /// <param name="dwCoInit">
-        /// The concurrency model and initialization options for the thread
+        ///     The concurrency model and initialization options for the thread
         /// </param>
         /// <returns></returns>
         [DllImport("ole32.dll")]
         public static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
 
         /// <summary>
-        /// CoUninitialize() is used to uninitialize a COM thread.
+        ///     CoUninitialize() is used to uninitialize a COM thread.
         /// </summary>
         [DllImport("ole32.dll")]
         public static extern void CoUninitialize();
 
         /// <summary>
-        /// Registers an EXE class object with OLE so other applications can 
-        /// connect to it. EXE object applications should call 
-        /// CoRegisterClassObject on startup. It can also be used to register 
-        /// internal objects for use by the same EXE or other code (such as DLLs)
-        /// that the EXE uses.
+        ///     Registers an EXE class object with OLE so other applications can
+        ///     connect to it. EXE object applications should call
+        ///     CoRegisterClassObject on startup. It can also be used to register
+        ///     internal objects for use by the same EXE or other code (such as DLLs)
+        ///     that the EXE uses.
         /// </summary>
         /// <param name="rclsid">CLSID to be registered</param>
         /// <param name="pUnk">
-        /// Pointer to the IUnknown interface on the class object whose 
-        /// availability is being published.
+        ///     Pointer to the IUnknown interface on the class object whose
+        ///     availability is being published.
         /// </param>
         /// <param name="dwClsContext">
-        /// Context in which the executable code is to be run.
+        ///     Context in which the executable code is to be run.
         /// </param>
         /// <param name="flags">
-        /// How connections are made to the class object.
+        ///     How connections are made to the class object.
         /// </param>
         /// <param name="lpdwRegister">
-        /// Pointer to a value that identifies the class object registered; 
+        ///     Pointer to a value that identifies the class object registered;
         /// </param>
         /// <returns></returns>
         /// <remarks>
-        /// PInvoking CoRegisterClassObject to register COM objects is not 
-        /// supported.
+        ///     PInvoking CoRegisterClassObject to register COM objects is not
+        ///     supported.
         /// </remarks>
         [DllImport("ole32.dll")]
         public static extern int CoRegisterClassObject(
@@ -75,80 +105,49 @@ namespace Com.AddIn.ComServer
             out uint lpdwRegister);
 
         /// <summary>
-        /// Informs OLE that a class object, previously registered with the 
-        /// CoRegisterClassObject function, is no longer available for use.
+        ///     Informs OLE that a class object, previously registered with the
+        ///     CoRegisterClassObject function, is no longer available for use.
         /// </summary>
         /// <param name="dwRegister">
-        /// Token previously returned from the CoRegisterClassObject function
+        ///     Token previously returned from the CoRegisterClassObject function
         /// </param>
         /// <returns></returns>
         [DllImport("ole32.dll")]
-        public static extern UInt32 CoRevokeClassObject(uint dwRegister);
+        public static extern uint CoRevokeClassObject(uint dwRegister);
 
         /// <summary>
-        /// Called by a server that can register multiple class objects to inform 
-        /// the SCM about all registered classes, and permits activation requests 
-        /// for those class objects.
+        ///     Called by a server that can register multiple class objects to inform
+        ///     the SCM about all registered classes, and permits activation requests
+        ///     for those class objects.
         /// </summary>
         /// <returns></returns>
         /// <remarks>
-        /// Servers that can register multiple class objects call 
-        /// CoResumeClassObjects once, after having first called 
-        /// CoRegisterClassObject, specifying REGCLS_LOCAL_SERVER | 
-        /// REGCLS_SUSPENDED for each CLSID the server supports. This function 
-        /// causes OLE to inform the SCM about all the registered classes, and 
-        /// begins letting activation requests into the server process.
-        /// 
-        /// This reduces the overall registration time, and thus the server 
-        /// application startup time, by making a single call to the SCM, no 
-        /// matter how many CLSIDs are registered for the server. Another 
-        /// advantage is that if the server has multiple apartments with 
-        /// different CLSIDs registered in different apartments, or is a free-
-        /// threaded server, no activation requests will come in until the server 
-        /// calls CoResumeClassObjects. This gives the server a chance to 
-        /// register all of its CLSIDs and get properly set up before having to 
-        /// deal with activation requests, and possibly shutdown requests. 
+        ///     Servers that can register multiple class objects call
+        ///     CoResumeClassObjects once, after having first called
+        ///     CoRegisterClassObject, specifying REGCLS_LOCAL_SERVER |
+        ///     REGCLS_SUSPENDED for each CLSID the server supports. This function
+        ///     causes OLE to inform the SCM about all the registered classes, and
+        ///     begins letting activation requests into the server process.
+        ///     This reduces the overall registration time, and thus the server
+        ///     application startup time, by making a single call to the SCM, no
+        ///     matter how many CLSIDs are registered for the server. Another
+        ///     advantage is that if the server has multiple apartments with
+        ///     different CLSIDs registered in different apartments, or is a free-
+        ///     threaded server, no activation requests will come in until the server
+        ///     calls CoResumeClassObjects. This gives the server a chance to
+        ///     register all of its CLSIDs and get properly set up before having to
+        ///     deal with activation requests, and possibly shutdown requests.
         /// </remarks>
         [DllImport("ole32.dll")]
         public static extern int CoResumeClassObjects();
-
-        /// <summary>
-        /// Interface Id of IClassFactory
-        /// </summary>
-        public const string IID_IClassFactory = "00000001-0000-0000-C000-000000000046";
-
-        /// <summary>
-        /// Interface Id of IUnknown
-        /// </summary>
-        public const string IID_IUnknown = "00000000-0000-0000-C000-000000000046";
-
-        /// <summary>
-        /// Interface Id of IDispatch
-        /// </summary>
-        public const string IID_IDispatch = "00020400-0000-0000-C000-000000000046";
-
-        /// <summary>
-        /// Class does not support aggregation (or class object is remote)
-        /// </summary>
-        public const int CLASS_E_NOAGGREGATION = unchecked((int)0x80040110);
-
-        /// <summary>
-        /// No such interface supported
-        /// </summary>
-        public const int E_NOINTERFACE = unchecked((int)0x80004002);
-
-        /// <summary>
-        /// No such interface supported
-        /// </summary>
-        public const int S_OK = 0;
     }
 
     /// <summary>
-    /// Values from the CLSCTX enumeration are used in activation calls to 
-    /// indicate the execution contexts in which an object is to be run. These
-    /// values are also used in calls to CoRegisterClassObject to indicate the
-    /// set of execution contexts in which a class object is to be made available
-    /// for requests to construct instances.
+    ///     Values from the CLSCTX enumeration are used in activation calls to
+    ///     indicate the execution contexts in which an object is to be run. These
+    ///     values are also used in calls to CoRegisterClassObject to indicate the
+    ///     set of execution contexts in which a class object is to be made available
+    ///     for requests to construct instances.
     /// </summary>
     [Flags]
     internal enum CLSCTX : uint
@@ -176,8 +175,8 @@ namespace Com.AddIn.ComServer
     }
 
     /// <summary>
-    /// The REGCLS enumeration defines values used in CoRegisterClassObject to 
-    /// control the type of connections to a class object.
+    ///     The REGCLS enumeration defines values used in CoRegisterClassObject to
+    ///     control the type of connections to a class object.
     /// </summary>
     [Flags]
     internal enum REGCLS : uint
@@ -186,6 +185,6 @@ namespace Com.AddIn.ComServer
         MULTIPLEUSE = 1,
         MULTI_SEPARATE = 2,
         SUSPENDED = 4,
-        SURROGATE = 8,
+        SURROGATE = 8
     }
 }

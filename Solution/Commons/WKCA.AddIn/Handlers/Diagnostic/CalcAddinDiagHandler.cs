@@ -6,7 +6,13 @@ namespace WKCA.AddIn.Handlers.Diagnostic
     public class CalcAddinDiagHandler : IAddinCalcDiagnosticHandler
     {
         public delegate bool ExecuteDelegate(IAppDocReturn aDocReturn, int AGroupNo, string ADiagName);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public CalcAddinDiagHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinNotifyHandler
 
@@ -28,10 +34,5 @@ namespace WKCA.AddIn.Handlers.Diagnostic
         }
 
         #endregion
-
-        public CalcAddinDiagHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

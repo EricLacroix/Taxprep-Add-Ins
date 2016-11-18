@@ -2,14 +2,10 @@
 //#define EmulateDragAndDropError
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Windows;
+using System.Text;
+using System.Windows.Forms;
 using NLog;
 using TaxprepAddinAPI;
 using WKCA.AddIn;
@@ -21,13 +17,10 @@ using WKCA.AddIn.Handlers.Diagnostic;
 using WKCA.AddIn.Handlers.DragDrop;
 using WKCA.AddIn.Handlers.ModuleManager;
 using WKCA.Sample;
-using Clipboard = System.Windows.Forms.Clipboard;
-using MessageBox = System.Windows.Forms.MessageBox;
-
 
 namespace WKCA
 {
-	[AddinInstance]
+    [AddinInstance]
     public class AddinInstance : AddinInstanceBase
     {
         private IAppMenuItem _testMenuItem;
@@ -35,11 +28,11 @@ namespace WKCA
 
         private bool CustomDiagOn = true;
 
-	    private static  Logger m_logger;
-	    private static string m_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        private static Logger m_logger;
+        private static readonly string m_version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public AddinInstance() : base(new Guid("8C6E1349-8287-42C7-83ED-6AAE51DE11A5"), "Sample Add-In",
-                "1.0.0.0")
+            "1.0.0.0")
         {
             //some class initizalition code
             m_logger = LogManager.GetCurrentClassLogger();
@@ -47,7 +40,7 @@ namespace WKCA
         }
 
         public override void InitializeTaxPrepAddin()
-	    {
+        {
             m_logger.Log(LogLevel.Trace, ("Initializing addin instance"));
 
 
@@ -63,27 +56,26 @@ namespace WKCA
         public override void ReleaseApp()
         {
             // do nothing
-            base.ReleaseApp(); 
+            base.ReleaseApp();
         }
 
         #region Event handlers
 
-
         private void DoHelloWorld()
         {
-            MessageBox.Show("Hello world");            
+            MessageBox.Show("Hello world");
         }
 
         private void DoAppProperties()
         {
-            IAppTaxApplicationService aApplication = (IAppTaxApplicationService)_appInstance;
+            var aApplication = (IAppTaxApplicationService) _appInstance;
             AppProperiesForm.ShowProperties(aApplication);
         }
 
         private void DoClientFileProperties()
         {
-            IAppClientFileManagerService aManager = (IAppClientFileManagerService)_appInstance;
-            IAppClientFile aFile = aManager.GetCurrentClientFile();
+            var aManager = (IAppClientFileManagerService) _appInstance;
+            var aFile = aManager.GetCurrentClientFile();
 
             if (aFile == null)
                 MessageBox.Show("Please Open a Client File first");
@@ -124,7 +116,7 @@ namespace WKCA
         private void DoBeforeClientFileNameChange(string aOldFileName, string aNewFileName)
         {
             m_logger.Log(LogLevel.Trace, "BeforeClientFileNameChange AOldFilename = {0}, ANewFileName = {1}",
-                 aOldFileName, aNewFileName);
+                aOldFileName, aNewFileName);
         }
 
         private void DoBeforeClientFileSave(string aFileName, out bool aAccept)
@@ -145,19 +137,19 @@ namespace WKCA
 
         private void DoCurrentCell()
         {
-            var LTaxpApp = (IAppTaxApplicationService)_appInstance;
+            var LTaxpApp = (IAppTaxApplicationService) _appInstance;
             var LCell = LTaxpApp.GetCurrentTaxCell();
             if (LCell == null)
             {
                 MessageBox.Show("Current cell is not assigned");
                 return;
-        }
+            }
             CellPropertieForm.ShowCellProperties(LCell, LTaxpApp);
         }
 
         private void DoReturnStatuses()
         {
-            var LTaxApp = (IAppTaxApplicationService)_appInstance;
+            var LTaxApp = (IAppTaxApplicationService) _appInstance;
             var LReturn = LTaxApp.GetCurrentDocReturn();
 
             if (LReturn == null)
@@ -183,44 +175,52 @@ namespace WKCA
 
         private void DoBeforeReturnStatusChange(IAppDocReturn aDocReturn, string AStatusName, int aOldValue, int AValue)
         {
-            m_logger.Log(LogLevel.Trace, "DoBeforeReturnStatusChange status '{0}' from '{1}' to '{2}'", AStatusName, aOldValue, AValue);
+            m_logger.Log(LogLevel.Trace, "DoBeforeReturnStatusChange status '{0}' from '{1}' to '{2}'", AStatusName,
+                aOldValue, AValue);
         }
 
         private void DoAfterClientFileAdd(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "AfterClientFileAdd : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "AfterClientFileAdd : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
         }
 
         private bool DoCanCloseClientFile(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoCanCloseClientFile : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "DoCanCloseClientFile : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
 
             return true;
         }
 
         private void DoAfterClientFileRemove(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoAfterClientFileRemove : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "DoAfterClientFileRemove : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
         }
 
         private void DoBeforeClientFileRemove(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoBeforeClientFileRemove : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "DoBeforeClientFileRemove : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
         }
 
         private void DoBeforeClientFileAdd(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoBeforeClientFileAdd : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "DoBeforeClientFileAdd : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
         }
 
         private void DoAfterCurrentClientFileChange(IAppClientFile aClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoAfterCurrentClientFileChange : ClientFile {0}", aClientFile == null ? "NULL" : aClientFile.GetGUID());
+            m_logger.Log(LogLevel.Trace, "DoAfterCurrentClientFileChange : ClientFile {0}",
+                aClientFile == null ? "NULL" : aClientFile.GetGUID());
         }
 
         private void DoBeforeCurrentClientFileChange(IAppClientFile AOldClientFile, IAppClientFile ANewClientFile)
         {
-            m_logger.Log(LogLevel.Trace, "DoBeforeCurrentClientFileChange : AOldClientFile {0}, ANewClientFile {1}", AOldClientFile == null ? "NULL" : AOldClientFile.GetGUID(),
+            m_logger.Log(LogLevel.Trace, "DoBeforeCurrentClientFileChange : AOldClientFile {0}, ANewClientFile {1}",
+                AOldClientFile == null ? "NULL" : AOldClientFile.GetGUID(),
                 ANewClientFile == null ? "NULL" : ANewClientFile.GetGUID());
         }
 
@@ -286,13 +286,14 @@ namespace WKCA
 
         private void DoTriggerAppException()
         {
-            var lTesting = (IAppTesting)_appInstance;
+            var lTesting = (IAppTesting) _appInstance;
             lTesting.TestRaiseError("Test message 1");
         }
 
 #if (EmulateDragAndDropError)
         string sOld;
 #endif
+
         private dynamic DoGetUnicodeTextDragDropData(IAppCellSelectionIter aSelection)
         {
             var lText = "[";
@@ -306,7 +307,7 @@ namespace WKCA
                 }
                 sOld = aSelection.Current().GetFieldCellPath(false);
 #endif
-                lText += '"' + aSelection.Current().GetFieldCellPath(false) +  '"';
+                lText += '"' + aSelection.Current().GetFieldCellPath(false) + '"';
                 aSelection.Next();
                 if (!aSelection.IsDone())
                     lText += ',';
@@ -315,23 +316,22 @@ namespace WKCA
 
             lText = '{' + string.Format("name:\"WKCA.Sample\",cells:{0}", lText) + "}\0";
 
-            return System.Text.Encoding.Unicode.GetBytes(lText);
+            return Encoding.Unicode.GetBytes(lText);
         }
 
         private void DoQueryComplexData()
         {
-            var LApplication = (IAppTaxApplicationService)_appInstance;
+            var LApplication = (IAppTaxApplicationService) _appInstance;
             if (LApplication.GetCurrentTaxData() == null)
                 MessageBox.Show("Please Open a Client File first");
             else
             {
-                using (var form = new WKCA.Sample.QueryComplexDataForm())
+                using (var form = new QueryComplexDataForm())
                 {
                     form.LoadData(LApplication.GetCurrentTaxData());
                     form.ShowDialog();
                 }
             }
-                
         }
 
         private void DoCurrentModuleInfo()
@@ -339,7 +339,7 @@ namespace WKCA
             var lMsg = "(none)";
             var lModule = ((IAppModuleManager) _appInstance).CurrentModule;
             if (lModule != null)
-                lMsg = string.Format("Name: '{0}'\r\nTitleName: '{1}'\r\nTitleButtonName: '{2}'", 
+                lMsg = string.Format("Name: '{0}'\r\nTitleName: '{1}'\r\nTitleButtonName: '{2}'",
                     lModule.Name, lModule.TitleName, lModule.TitleButtonName);
 
             MessageBox.Show(lMsg);
@@ -348,36 +348,40 @@ namespace WKCA
 
         private void DoShowUnlockCodeEfile()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LConfig = LApp.Configuration;
-            int LEfileType = LConfig.AsInteger("Application", "EFILEType", 0);
-            var LEFileUnlock = LApp.GetStringWithLanguage("\\Unlock\\EFILE\\", LEfileType.ToString(), LApp.GetDefaultLanguage());
+            var LEfileType = LConfig.AsInteger("Application", "EFILEType", 0);
+            var LEFileUnlock = LApp.GetStringWithLanguage("\\Unlock\\EFILE\\", LEfileType.ToString(),
+                LApp.GetDefaultLanguage());
             MessageBox.Show(string.IsNullOrEmpty(LEFileUnlock) ? "No efile unlock code assigned" : LEFileUnlock);
         }
 
         private void DoShowUnlockKey()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LConfig = LApp.Configuration;
             var LKey = LConfig.AsString("Application", "UnlockKey", "");
-            MessageBox.Show(string.Format("{0}\n The code is copied to clipboard", string.IsNullOrEmpty(LKey) ? "No unlock key assigned" : LKey));
+            MessageBox.Show(string.Format("{0}\n The code is copied to clipboard",
+                string.IsNullOrEmpty(LKey) ? "No unlock key assigned" : LKey));
             Clipboard.SetText(LKey);
         }
 
         private void DoShowUniqueID()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LKey = LApp.GetMachineIdentifier();
-            MessageBox.Show(string.Format("{0}\n The Unique ID is copied to clipboard", string.IsNullOrEmpty(LKey) ? "No unlock key assigned" : LKey));
+            MessageBox.Show(string.Format("{0}\n The Unique ID is copied to clipboard",
+                string.IsNullOrEmpty(LKey) ? "No unlock key assigned" : LKey));
             Clipboard.SetText(LKey);
         }
 
         private void DoShowUnlockCodeNetwork()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LConfig = LApp.Configuration;
-            int LNetworkType = LConfig.AsInteger("Application", "NetworkType", 0);
-            string networkOption = LApp.GetStringWithLanguage("\\Unlock\\Network", LNetworkType.ToString(), LApp.GetDefaultLanguage());
+            var LNetworkType = LConfig.AsInteger("Application", "NetworkType", 0);
+            var networkOption = LApp.GetStringWithLanguage("\\Unlock\\Network", LNetworkType.ToString(),
+                LApp.GetDefaultLanguage());
             MessageBox.Show(string.IsNullOrEmpty(networkOption) ? "No network unlock code assigned" : networkOption);
         }
 
@@ -399,28 +403,27 @@ namespace WKCA
 
         private void DoConfigurationDemo()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LConfig = LApp.Configuration;
-            WKCA.Sample.ConfigurationDemo.ShowConfiguration(LConfig);
+            ConfigurationDemo.ShowConfiguration(LConfig);
         }
 
         private void DoDiagDemo()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
 
             if (LApp.GetClientFileManager().GetCurrentClientFile() == null)
                 MessageBox.Show("Please Open a Client File first");
             else
             {
                 var LDiag = LApp.GetClientFileManager().GetCurrentClientFile().GetCurrentReturn().GetDiagnostic();
-                WKCA.Sample.Diagnotics.ShowDiagnostic(LDiag);
+                Diagnotics.ShowDiagnostic(LDiag);
             }
-                
         }
 
         private void DoUFLDemo()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LUFL = LApp.UFL;
             var LCurrentReturn = LApp.GetCurrentDocReturn();
 
@@ -428,13 +431,13 @@ namespace WKCA
                 MessageBox.Show("Please Open a Client File first");
             else
             {
-                WKCA.Sample.UFLDemo.ShowUFL(LUFL, LCurrentReturn);
+                UFLDemo.ShowUFL(LUFL, LCurrentReturn);
             }
         }
 
         private void DoClientLettersDemo()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
+            var LApp = (IAppTaxApplicationService) _appInstance;
             var LCLManager = LApp.ClientLetterManager;
             var LUFL = LApp.UFL;
             var LCurrentReturn = LApp.GetCurrentDocReturn();
@@ -443,24 +446,23 @@ namespace WKCA
                 MessageBox.Show("Please Open a Client File first");
             else
             {
-                WKCA.Sample.ClientLettersDemo.ShowDemo(LCLManager, LCurrentReturn, LUFL);
+                ClientLettersDemo.ShowDemo(LCLManager, LCurrentReturn, LUFL);
             }
-                
         }
 
         private void DoCursorDemo()
         {
-            var LApp = (IAppTaxApplicationService)_appInstance;
-            WKCA.Sample.CursorDemo.Display(LApp);
+            var LApp = (IAppTaxApplicationService) _appInstance;
+            CursorDemo.Display(LApp);
         }
 
         private void DoOpenClientFileDemo()
         {
             string lFileName;
-            AppClientFileOpenOptions options = WKCA.Sample.OpenClientFile.RunOpenClientFile(out lFileName);
+            var options = OpenClientFile.RunOpenClientFile(out lFileName);
             if (string.IsNullOrEmpty(lFileName))
                 return;
-            var manager = (IAppClientFileManagerService)_appInstance;
+            var manager = (IAppClientFileManagerService) _appInstance;
             IAppClientFile cf;
             manager.OpenClientFile(lFileName, out cf, options);
             Debug.WriteLine(string.Format("Open client file {0}", cf.GetGUID()));
@@ -468,10 +470,10 @@ namespace WKCA
 
         private void DoOpenClientFileDemoUiSilent()
         {
-            string lFileName = WKCA.Sample.OpenFileSimple.Execute();
+            var lFileName = OpenFileSimple.Execute();
             if (!string.IsNullOrEmpty(lFileName))
             {
-                var manager = (IAppClientFileManagerService)_appInstance;
+                var manager = (IAppClientFileManagerService) _appInstance;
                 IAppClientFile cf;
                 manager.OpenClientFileUISilent(lFileName, out cf);
 
@@ -481,10 +483,10 @@ namespace WKCA
 
         private void DoOpenClientFileDemoUiDefault()
         {
-            string lFileName = WKCA.Sample.OpenFileSimple.Execute();
+            var lFileName = OpenFileSimple.Execute();
             if (!string.IsNullOrEmpty(lFileName))
             {
-                var manager = (IAppClientFileManagerService)_appInstance;
+                var manager = (IAppClientFileManagerService) _appInstance;
                 IAppClientFile cf;
                 manager.OpenClientFileUIDefault(lFileName, out cf);
 
@@ -494,13 +496,13 @@ namespace WKCA
 
         private void DoAttachementDemo()
         {
-            var application = (IAppTaxApplicationService)_appInstance;
+            var application = (IAppTaxApplicationService) _appInstance;
             var docReturn = application.GetCurrentDocReturn();
 
             if (docReturn == null)
                 MessageBox.Show("Please Open a Client File first");
             else if (docReturn is IAppDocReturn1)
-                WKCA.Sample.Attachments.ShowDemo(docReturn as IAppDocReturn1);
+                Attachments.ShowDemo(docReturn as IAppDocReturn1);
             else
                 MessageBox.Show("Attachement manager is not supported by current version of Taxprep");
         }
@@ -512,7 +514,8 @@ namespace WKCA
             var app = (IAppTaxApplicationService) _appInstance;
             handle = app.getMainFormHandle();
             app.getMainMainFormsBaunds(out x, out y, out width, out heigh);
-            MessageBox.Show(string.Format("Baunds x:{0}, y:{1}, width{2}, height{3}\nHandle {4}", x, y, width, heigh, handle));
+            MessageBox.Show(string.Format("Baunds x:{0}, y:{1}, width{2}, height{3}\nHandle {4}", x, y, width, heigh,
+                handle));
         }
 
 
@@ -530,28 +533,33 @@ namespace WKCA
 
         private void InitClientFileEvents()
         {
-            var ClientFileEvents = (IAppClientFileEventsService)_appInstance;
+            var ClientFileEvents = (IAppClientFileEventsService) _appInstance;
             if (ClientFileEvents != null)
             {
                 ClientFileEvents.AfterClientFileSave = new AfterSaveHandler(DoAfterClientFileSave);
                 ClientFileEvents.AfterClientFileNameChange = new AfterChangeNameHandler(DoAfterClientFileNameChange);
-                ClientFileEvents.AfterChangeClientFileHeaderProperty = new AfterChangeHeaderPropertyHandler(DoAfterChangeClientFileHeaderProperty);
-                ClientFileEvents.AfterCurrentDocumentChange = new ClientFileNotifyWithDocumentHandler(DoAfterCurrentDocumentChange);
+                ClientFileEvents.AfterChangeClientFileHeaderProperty =
+                    new AfterChangeHeaderPropertyHandler(DoAfterChangeClientFileHeaderProperty);
+                ClientFileEvents.AfterCurrentDocumentChange =
+                    new ClientFileNotifyWithDocumentHandler(DoAfterCurrentDocumentChange);
                 ClientFileEvents.AfterDocumentAdd = new ClientFileNotifyWithDocumentHandler(DoAfterDocumentAdd);
                 ClientFileEvents.AfterDocumentRemove = new ClientFileNotifyWithDocumentHandler(DoAfterDocumentRemove);
                 ClientFileEvents.BeforeClientFileNameChange = new BeforeChangeNameHandler(DoBeforeClientFileNameChange);
                 ClientFileEvents.BeforeClientFileSave = new BeforeSaveHandler(DoBeforeClientFileSave);
-                ClientFileEvents.BeforeCurrentDocumentChange = new BeforeCurrentDocumentChangeHandler(DoBeforeCurrentDocumentChange);
+                ClientFileEvents.BeforeCurrentDocumentChange =
+                    new BeforeCurrentDocumentChangeHandler(DoBeforeCurrentDocumentChange);
                 ClientFileEvents.BeforeDocumentAdd = new ClientFileNotifyWithDocumentHandler(DoBeforeDocumentAdd);
                 ClientFileEvents.BeforeDocumentRemove = new ClientFileNotifyWithDocumentHandler(DoBeforeDocumentRemove);
-                ClientFileEvents.BeforeReturnStatusChange = new BeforeReturnStatusChangeHandler(DoBeforeReturnStatusChange);
-                var app = (IAppTaxApplicationService)_appInstance;
+                ClientFileEvents.BeforeReturnStatusChange =
+                    new BeforeReturnStatusChangeHandler(DoBeforeReturnStatusChange);
+                var app = (IAppTaxApplicationService) _appInstance;
                 var version = app.GetCalcVersion().Split('.');
                 var majorVersion = Convert.ToInt32(version[0]);
                 var buildVersion = Convert.ToInt32(version[3]);
                 if ((majorVersion > 2014) || (buildVersion > 13))
                 {
-                    ClientFileEvents.BeforeCurrentClientFileChange = new ClientFileChangeHandler(DoBeforeCurrentClientFileChange);
+                    ClientFileEvents.BeforeCurrentClientFileChange =
+                        new ClientFileChangeHandler(DoBeforeCurrentClientFileChange);
                     ClientFileEvents.AfterCurrentClientFileChange = new ClientFileHandler(DoAfterCurrentClientFileChange);
                     ClientFileEvents.BeforeClientFileAdd = new ClientFileHandler(DoBeforeClientFileAdd);
                     ClientFileEvents.AfterClientFileAdd = new ClientFileHandler(DoAfterClientFileAdd);
@@ -561,11 +569,12 @@ namespace WKCA
                     ClientFileEvents.OnCheckHeaderAlias = new DocReturnNotifyHandler(DoOnCheckHeaderAlias);
                     ClientFileEvents.OnUpdateReturnHeader = new DocReturnNotifyHandler(DoOnUpdateReturnHeader);
                     ClientFileEvents.OnSaveReturnHeader = new DocReturnNotifyHandler(DoOnSaveReturnHeader);
-                    ClientFileEvents.OnUpdateDatabaseFromReturnHeader = new DocReturnNotifyHandler(DoOnUpdateDatabaseFromReturnHeader);
+                    ClientFileEvents.OnUpdateDatabaseFromReturnHeader =
+                        new DocReturnNotifyHandler(DoOnUpdateDatabaseFromReturnHeader);
                     ClientFileEvents.OnBeforeOpenClientFile = new ClientFileHandler(DoOnBeforeOpenClientFile);
                 }
             }
-            var LApplication = (IAppTaxApplicationService)_appInstance;
+            var LApplication = (IAppTaxApplicationService) _appInstance;
             var LConfiguration = LApplication.Configuration;
             LConfiguration.AfterAddSection = new SectionAddRemove(DoAddConfigurationSection);
             LConfiguration.AfterRemoveSection = new SectionAddRemove(DoRemoveConfigurationSection);
@@ -574,7 +583,7 @@ namespace WKCA
 
         private void InitApplicationEvents()
         {
-            var app = (IAppTaxApplicationService)_appInstance;
+            var app = (IAppTaxApplicationService) _appInstance;
             if (app is IAppTaxApplicationService1)
             {
                 var app14 = app as IAppTaxApplicationService1;
@@ -585,7 +594,7 @@ namespace WKCA
 
         private void InitDatabaseEnvEvents()
         {
-            var DBEnv = (IAppDatabaseEnvEventsService)_appInstance;
+            var DBEnv = (IAppDatabaseEnvEventsService) _appInstance;
             if (DBEnv != null)
             {
                 DBEnv.AfterAcceptUserInput = new AfterAcceptUserInput(DoAfterAcceptUserInput);
@@ -597,7 +606,7 @@ namespace WKCA
                 if (DBEnv is IAppDatabaseEnvEventsService1)
                 {
                     var DBEnv1 = DBEnv as IAppDatabaseEnvEventsService1;
-                   
+
                     DBEnv1.OnCalcAddinDiag = new CalcAddinDiagHandler(DoCalcAddinDiag);
                     DBEnv1.OnDiagClick = new DiagnosticClickHandler(DoClickAddinDiag);
                 }
@@ -616,7 +625,7 @@ namespace WKCA
 
         private void InitMenu()
         {
-            var appMenuService = (IAppMenuService)_appInstance;
+            var appMenuService = (IAppMenuService) _appInstance;
             if (appMenuService != null)
             {
                 var subMenu = appMenuService.AddRootMenu(string.Format("Sample Add-In v{0}", m_version));
@@ -627,7 +636,6 @@ namespace WKCA
                 item.ClickHandler = new AppNotifyHandler(DoHelloWorld);
                 item.Visible = true;
                 item.Enabled = true;
-
 
 
                 var item3 = subMenu.AddItem("Application properties...", true);
@@ -707,7 +715,7 @@ namespace WKCA
                 var itemAttachements = subMenu.AddItem("File Attachements...", false);
                 itemAttachements.ClickHandler = new AppNotifyHandler(DoAttachementDemo);
                 itemAttachements.Enabled = true;
-                
+
 
                 var item9 = subMenu.AddItem("Query complex data", false);
                 item9.ClickHandler = new AppNotifyHandler(DoQueryComplexData);
@@ -718,7 +726,6 @@ namespace WKCA
                 itemAddDiag.ClickHandler = new AppNotifyHandler(DoAddDiagDemo);
                 itemAddDiag.Enabled = true;
                 itemAddDiag.Visible = true;
-
 
 
                 var itemCursorDemo = subMenu.AddItem("Hours glass cursor demo", true);
@@ -733,8 +740,6 @@ namespace WKCA
                 itemBaunds.Visible = true;
 
 
-
-
                 var itemOpenClientSubMenu = subMenu.AddSubMenu("Programatically Open", false);
 
                 var itemOpenClientFile = itemOpenClientSubMenu.AddItem("Open client file demo", false);
@@ -742,12 +747,14 @@ namespace WKCA
                 itemOpenClientFile.Enabled = true;
                 itemOpenClientFile.Visible = true;
 
-                var itemOpenClientFileUiDefault = itemOpenClientSubMenu.AddItem("Open client file demo (UIDefault)", false);
+                var itemOpenClientFileUiDefault = itemOpenClientSubMenu.AddItem("Open client file demo (UIDefault)",
+                    false);
                 itemOpenClientFileUiDefault.ClickHandler = new AppNotifyHandler(DoOpenClientFileDemoUiDefault);
                 itemOpenClientFileUiDefault.Enabled = true;
                 itemOpenClientFileUiDefault.Visible = true;
 
-                var itemOpenClientFileUiSilent = itemOpenClientSubMenu.AddItem("Open client file demo (UI Silent)", false);
+                var itemOpenClientFileUiSilent = itemOpenClientSubMenu.AddItem("Open client file demo (UI Silent)",
+                    false);
                 itemOpenClientFileUiSilent.ClickHandler = new AppNotifyHandler(DoOpenClientFileDemoUiSilent);
                 itemOpenClientFileUiSilent.Enabled = true;
                 itemOpenClientFileUiSilent.Visible = true;
@@ -758,13 +765,15 @@ namespace WKCA
                 _testMenuItem = testSubMenu.AddItem("Menu Item", false);
 
 
+                CreateMenuItem(testSubMenu, "Change 'Submenu' Enabled",
+                    () => _testSubMenu.Enabled = !_testSubMenu.Enabled, true);
+                CreateMenuItem(testSubMenu, "Change 'Submenu' Visible",
+                    () => _testSubMenu.Visible = !_testSubMenu.Visible, false);
 
-                CreateMenuItem(testSubMenu, "Change 'Submenu' Enabled", () => _testSubMenu.Enabled = !_testSubMenu.Enabled, true);
-                CreateMenuItem(testSubMenu, "Change 'Submenu' Visible", () => _testSubMenu.Visible = !_testSubMenu.Visible, false);
-
-                CreateMenuItem(testSubMenu, "Change 'MenuItem' Enabled", () => _testMenuItem.Enabled = !_testMenuItem.Enabled, true);
-                CreateMenuItem(testSubMenu, "Change 'MenuItem' Visible", () => _testMenuItem.Visible = !_testMenuItem.Visible, false);
-
+                CreateMenuItem(testSubMenu, "Change 'MenuItem' Enabled",
+                    () => _testMenuItem.Enabled = !_testMenuItem.Enabled, true);
+                CreateMenuItem(testSubMenu, "Change 'MenuItem' Visible",
+                    () => _testMenuItem.Visible = !_testMenuItem.Visible, false);
             }
         }
 
@@ -777,7 +786,7 @@ namespace WKCA
         {
             const uint cfUnicodetext = 13; //CF_UNICODETEXT
 
-            var appDragDrop = (IAppDragDropService)_appInstance;
+            var appDragDrop = (IAppDragDropService) _appInstance;
             if (appDragDrop != null)
             {
                 appDragDrop.RegisterDataFormat(cfUnicodetext, new DataFormatHandler(DoGetUnicodeTextDragDropData));
@@ -789,12 +798,14 @@ namespace WKCA
 
         private void InitModuleManager()
         {
-            var mn = (GetModuleName)(m => (m == null) ? "(none)" : m.Name);
+            var mn = (GetModuleName) (m => (m == null) ? "(none)" : m.Name);
 
-            var lManager = (IAppModuleManager)_appInstance;
+            var lManager = (IAppModuleManager) _appInstance;
 
             lManager.BeforeCurrentModuleChange = new NotifyHandler(
-                aModule => m_logger.Log(LogLevel.Trace, "Changing '{0}' module to '{1}'", mn(lManager.CurrentModule), mn(aModule)));
+                aModule =>
+                    m_logger.Log(LogLevel.Trace, "Changing '{0}' module to '{1}'", mn(lManager.CurrentModule),
+                        mn(aModule)));
 
             lManager.AfterCurrentModuleChange = new NotifyHandler(
                 aModule => m_logger.Log(LogLevel.Trace, "Module '{0}' is active now.", mn(aModule)));
@@ -802,17 +813,16 @@ namespace WKCA
 
         private void InitCustomDiagnostic()
         {
-            var app = (IAppTaxApplicationService)_appInstance;
+            var app = (IAppTaxApplicationService) _appInstance;
             if (app is IAppTaxApplicationService1)
             {
                 var app14 = app as IAppTaxApplicationService1;
                 var diag = app14.GetCustomDiagnostic();
-                diag.RegisterAddinDiagnostic(0, 0, "MyUniqueDiagIdentification", "Some Custom Diag with English Text", "Un diagnostique maison avec un texte francais", AppJuridiction.Const1, false);
+                diag.RegisterAddinDiagnostic(0, 0, "MyUniqueDiagIdentification", "Some Custom Diag with English Text",
+                    "Un diagnostique maison avec un texte francais", AppJuridiction.Const1, false);
             }
         }
 
         #endregion
-
-
     }
 }

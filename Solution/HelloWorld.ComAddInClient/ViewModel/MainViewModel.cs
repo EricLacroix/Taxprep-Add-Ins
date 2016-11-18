@@ -2,7 +2,6 @@ using System;
 using System.Configuration;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using NLog;
@@ -13,12 +12,11 @@ namespace HelloWorld.ComAddInClient.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private static Logger _logger;
         private IAppInstance _appInstance;
-        
-        private string _status;
         private string _exceptionMessage;
 
-        private static Logger _logger;
+        private string _status;
 
         public MainViewModel()
         {
@@ -34,10 +32,7 @@ namespace HelloWorld.ComAddInClient.ViewModel
 
         public string Status
         {
-            get
-            {
-                return _status;
-            }
+            get { return _status; }
             set
             {
                 _status = value;
@@ -47,10 +42,7 @@ namespace HelloWorld.ComAddInClient.ViewModel
 
         public string ExceptionMessage
         {
-            get
-            {
-                return _exceptionMessage;
-            }
+            get { return _exceptionMessage; }
             set
             {
                 _exceptionMessage = value;
@@ -100,9 +92,9 @@ namespace HelloWorld.ComAddInClient.ViewModel
 
         public void DisconnectComAddInExecute()
         {
-           Marshal.ReleaseComObject(_appInstance);
+            Marshal.ReleaseComObject(_appInstance);
             _appInstance = null;
-    
+
             Status = "Not connected";
             ConnectComAddIn.RaiseCanExecuteChanged();
             ShowMessage.RaiseCanExecuteChanged();
@@ -121,8 +113,10 @@ namespace HelloWorld.ComAddInClient.ViewModel
         }
 
         /// <summary>
-        /// Uses GUID to create COM object. If COM object is registered in the registry corresponding process will be started automatically.
-        /// If COM object is not registered in the registry, but corresponding process is already running will connect to this process.
+        ///     Uses GUID to create COM object. If COM object is registered in the registry corresponding process will be started
+        ///     automatically.
+        ///     If COM object is not registered in the registry, but corresponding process is already running will connect to this
+        ///     process.
         /// </summary>
         private void GetTaxPrepAppUsingGuid()
         {
@@ -133,14 +127,15 @@ namespace HelloWorld.ComAddInClient.ViewModel
             dynamic comAccessProvider = Activator.CreateInstance(type);
 
             dynamic appInstance = comAccessProvider.GetAppInstance();
-            _appInstance = (IAppInstance)appInstance;
+            _appInstance = (IAppInstance) appInstance;
 
             Marshal.ReleaseComObject(comAccessProvider);
         }
 
         /// <summary>
-        /// Uses ProgId to create COM object. If COM object is registered in the registry corresponding process will be started automatically.
-        /// If COM object is not registered in the registry, fails to connect even if corresponding process is running.
+        ///     Uses ProgId to create COM object. If COM object is registered in the registry corresponding process will be started
+        ///     automatically.
+        ///     If COM object is not registered in the registry, fails to connect even if corresponding process is running.
         /// </summary>
         private void GetTaxPrepAppUsingProgId()
         {
@@ -151,7 +146,7 @@ namespace HelloWorld.ComAddInClient.ViewModel
             dynamic comAccessProvider = Activator.CreateInstance(type);
 
             dynamic appInstance = comAccessProvider.GetAppInstance();
-            _appInstance = (IAppInstance)appInstance;
+            _appInstance = (IAppInstance) appInstance;
         }
     }
 }

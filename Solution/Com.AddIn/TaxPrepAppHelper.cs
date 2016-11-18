@@ -2,7 +2,7 @@
 
 namespace Com.AddIn
 {
-    static class TaxPrepAppHelper
+    internal static class TaxPrepAppHelper
     {
         public static IAppInstance AppInstance { get; set; }
     }

@@ -7,11 +7,11 @@ namespace WKCA.UnitTest.Host
 {
     internal class SelectionStorage
     {
-        private Assembly FAssembly;
         private readonly string FFilePath;
         private readonly TestRunner FRunner;
 
         private readonly List<string> FUnSelected = new List<string>();
+        private Assembly FAssembly;
 
         public SelectionStorage(Assembly AAssembly, TestRunner ARunner)
         {

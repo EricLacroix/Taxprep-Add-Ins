@@ -7,6 +7,7 @@ namespace RegCom
     public class ParamsParser
     {
         private readonly string[] _args;
+
         public ParamsParser(string[] args)
         {
             _args = args;
@@ -21,10 +22,10 @@ namespace RegCom
 
             if (_args.Length == 1 && (StrEquals(_args[0], "/?") || StrEquals(_args[0], "/help")))
             {
-              return RegistrationRequest.GetHelpResult();
+                return RegistrationRequest.GetHelpResult();
             }
 
-            var result = new RegistrationRequest()
+            var result = new RegistrationRequest
             {
                 RegistrationAction = GetAction(),
                 TlbFileName = GetParamValue(_args, "tlb"),
@@ -35,7 +36,7 @@ namespace RegCom
 
             ValidateResult(result);
 
-          return result;
+            return result;
         }
 
         private bool StrEquals(string s1, string s2)
@@ -59,12 +60,12 @@ namespace RegCom
 
         private RegistrationAction GetAction()
         {
-            bool reg = _args.Any(arg => StrEquals(arg, "/r") || StrEquals(arg, "/register"));
+            var reg = _args.Any(arg => StrEquals(arg, "/r") || StrEquals(arg, "/register"));
             if (reg)
             {
                 return RegistrationAction.Register;
             }
-            bool unreg = _args.Any(arg => StrEquals(arg, "/u") || StrEquals(arg, "/unregister"));
+            var unreg = _args.Any(arg => StrEquals(arg, "/u") || StrEquals(arg, "/unregister"));
             if (unreg)
             {
                 return RegistrationAction.Unregister;
@@ -72,6 +73,7 @@ namespace RegCom
             //If nothing is specified do registration
             return RegistrationAction.Register;
         }
+
         private bool GetPerUser()
         {
             var key = GetParamValue(_args, "key");
@@ -83,29 +85,34 @@ namespace RegCom
             {
                 return false;
             }
-            throw new ArgumentException(string.Format("Incorrect key value: /key:{0}. Expected: /key:user or /key:classes", key));
+            throw new ArgumentException(
+                string.Format("Incorrect key value: /key:{0}. Expected: /key:user or /key:classes", key));
         }
 
         private void ValidateResult(RegistrationRequest result)
         {
-            if (result.RegistrationAction == RegistrationAction.Register && string.IsNullOrWhiteSpace(result.DllFileName) && string.IsNullOrWhiteSpace(result.TlbFileName))
+            if (result.RegistrationAction == RegistrationAction.Register &&
+                string.IsNullOrWhiteSpace(result.DllFileName) && string.IsNullOrWhiteSpace(result.TlbFileName))
             {
                 throw new ArgumentException("File names for registration are missing");
             }
 
-            if (result.RegistrationAction == RegistrationAction.Unregister && string.IsNullOrWhiteSpace(result.DllFileName) && string.IsNullOrWhiteSpace(result.TlbFileName))
+            if (result.RegistrationAction == RegistrationAction.Unregister &&
+                string.IsNullOrWhiteSpace(result.DllFileName) && string.IsNullOrWhiteSpace(result.TlbFileName))
             {
                 throw new ArgumentException("File names for unregistration are missing");
             }
 
             if (!string.IsNullOrWhiteSpace(result.DllFileName) && string.IsNullOrWhiteSpace(result.ExeFileName))
             {
-                throw new ArgumentException("Path to exe file hosting out of proc dll COM server should be specified for out of proc COM server registration");
+                throw new ArgumentException(
+                    "Path to exe file hosting out of proc dll COM server should be specified for out of proc COM server registration");
             }
 
             if (string.IsNullOrWhiteSpace(result.DllFileName) && !string.IsNullOrWhiteSpace(result.ExeFileName))
             {
-                throw new ArgumentException("Path to dll containing out of proc COM server should be specified for out of proc COM server registration");
+                throw new ArgumentException(
+                    "Path to dll containing out of proc COM server should be specified for out of proc COM server registration");
             }
         }
     }

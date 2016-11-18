@@ -6,13 +6,18 @@ namespace WKCA.AddIn.Handlers.ClientFile
     public class ClientFileChangeHandler : IAddinClientFileChangeEventHandler
     {
         public delegate void ExecuteDelegate(IAppClientFile AOldClientFile, IAppClientFile ANewClientFile);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public ClientFileChangeHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinClientFileChangeEventHandler
 
         public void Execute(IAppClientFile AOldClientFile, IAppClientFile ANewClientFile)
         {
-            
             try
             {
                 if (_onExecute != null)
@@ -28,10 +33,5 @@ namespace WKCA.AddIn.Handlers.ClientFile
         }
 
         #endregion
-
-        public ClientFileChangeHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

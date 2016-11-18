@@ -8,8 +8,8 @@ namespace WKCA.Sample
 {
     public partial class Attachments : Form
     {
-        private IAppDocReturn1 docReturn;
         private readonly IAppAttachementManager manager;
+        private IAppDocReturn1 docReturn;
 
         public Attachments(IAppDocReturn1 docReturn)
         {

@@ -6,8 +6,11 @@ namespace WKCA.Com.Utils
 {
     public class BaseComRegistrationService
     {
+        private static readonly UIntPtr HKEY_CLASSES_ROOT = new UIntPtr(0x80000000);
+        private static readonly UIntPtr HKEY_CURRENT_USER = new UIntPtr(0x80000001u);
         protected readonly bool _perUser;
         protected readonly RegistrationServices _regService;
+
         public BaseComRegistrationService(bool perUser = true)
         {
             _perUser = perUser;
@@ -40,9 +43,8 @@ namespace WKCA.Com.Utils
             });
         }
 
-        protected virtual void  UpdateDefaultRegistration(Assembly asm, string hostProcessPath)
+        protected virtual void UpdateDefaultRegistration(Assembly asm, string hostProcessPath)
         {
-            
         }
 
         protected void ExecuteWithRegsitryKeyOverride(Action action)
@@ -94,7 +96,7 @@ namespace WKCA.Com.Utils
                 throw new ApplicationException(string.Format("Can not restore registry key. Error Code: {0:X}", res));
             }
         }
-     
+
         [DllImport("advapi32.dll")]
         private static extern int RegOverridePredefKey(UIntPtr hKey, UIntPtr hNewHKey);
 
@@ -103,10 +105,5 @@ namespace WKCA.Com.Utils
 
         [DllImport("advapi32.dll")]
         private static extern int RegCloseKey(UIntPtr hKey);
-
-
-        private static UIntPtr HKEY_CLASSES_ROOT = new UIntPtr(0x80000000);
-        private static UIntPtr HKEY_CURRENT_USER = new UIntPtr(0x80000001u);
-
     }
 }

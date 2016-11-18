@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.ClientFile
 
         public void Execute(IAppDocReturn aDocReturn, string AStatusName, int aOldValue, int AValue)
         {
-            
             try
             {
                 if (_onExecute != null)

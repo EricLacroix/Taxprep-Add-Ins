@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.Configuration
 
         public void Execute(string aLevel, string aSection, string aKey, string AValue)
         {
-            
             try
             {
                 if (_onExecute != null)

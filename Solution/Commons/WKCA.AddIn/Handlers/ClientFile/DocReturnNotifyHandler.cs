@@ -6,13 +6,18 @@ namespace WKCA.AddIn.Handlers.ClientFile
     public class DocReturnNotifyHandler : IAddinDocReturnNotifyHandler
     {
         public delegate void ExecuteDelegate(IAppDocReturn aDocReturn);
+
         private readonly ExecuteDelegate _onExecute;
+
+        public DocReturnNotifyHandler(ExecuteDelegate onExecute)
+        {
+            _onExecute = onExecute;
+        }
 
         #region IAddinDocReturnNotifyHandler
 
         public void Execute(IAppDocReturn aDocReturn)
         {
-            
             try
             {
                 if (_onExecute != null)
@@ -28,10 +33,5 @@ namespace WKCA.AddIn.Handlers.ClientFile
         }
 
         #endregion
-
-        public DocReturnNotifyHandler(ExecuteDelegate onExecute)
-        {
-            _onExecute = onExecute;
-        }
     }
 }

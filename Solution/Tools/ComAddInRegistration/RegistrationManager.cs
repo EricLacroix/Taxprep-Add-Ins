@@ -3,13 +3,15 @@ using WKCA.Com.Utils;
 
 namespace RegCom
 {
-    class RegistrationManager
+    internal class RegistrationManager
     {
         private readonly RegistrationRequest _request;
+
         public RegistrationManager(RegistrationRequest request)
         {
             _request = request;
         }
+
         public bool Run()
         {
             switch (_request.RegistrationAction)

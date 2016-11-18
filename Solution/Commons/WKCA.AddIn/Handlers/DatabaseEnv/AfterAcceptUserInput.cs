@@ -18,7 +18,6 @@ namespace WKCA.AddIn.Handlers.DatabaseEnv
 
         public void Execute(IAppTaxCell aCell)
         {
-            
             try
             {
                 if (_onExecute != null)

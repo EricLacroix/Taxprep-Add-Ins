@@ -6,11 +6,11 @@ namespace WKCA.Com.Utils
     public class ComRegistrationHelper
     {
         private string _productNameCode;
-        private string _productYear;
         private string _productVersion;
-       
+        private string _productYear;
+
         /// <summary>
-        /// Replaces first 6 zero digits of Guid with TaxPrep specific values.
+        ///     Replaces first 6 zero digits of Guid with TaxPrep specific values.
         /// </summary>
         /// <param name="template"></param>
         /// <param name="taxPrepFileName"></param>
@@ -32,8 +32,9 @@ namespace WKCA.Com.Utils
         public string GetApplicationNamespace(string exeName)
         {
             ParseTaxPrepExeName(exeName);
-            return _productVersion != null ? string.Format($"t{_productNameCode}_taxprep_{_productYear}-{_productVersion}")
-                                           : string.Format($"t{_productNameCode}_taxprep_{_productYear}");
+            return _productVersion != null
+                ? string.Format($"t{_productNameCode}_taxprep_{_productYear}-{_productVersion}")
+                : string.Format($"t{_productNameCode}_taxprep_{_productYear}");
         }
 
         public string GetProgId(string exeName, string typeName)
