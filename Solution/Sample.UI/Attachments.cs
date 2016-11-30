@@ -99,7 +99,7 @@ namespace WKCA.Sample
                 Attachment = attachement;
             }
 
-            public IAppAttachment Attachment { get; }
+            public IAppAttachment Attachment { get; private set; }
 
             public override string ToString()
             {

@@ -144,7 +144,12 @@ namespace Com.AddIn.ComServer
         {
         }
 
-        public static OutOfProcComServer Instance { get; } = new OutOfProcComServer();
+        private static readonly OutOfProcComServer _instance = new OutOfProcComServer();
+
+        public static OutOfProcComServer Instance
+        {
+            get { return _instance; }
+        }
 
         #endregion
     }

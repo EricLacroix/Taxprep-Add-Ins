@@ -11,6 +11,7 @@ namespace Com.AddIn
     public class AddinInstance : AddinInstanceBase
     {
         private static readonly Logger Log = LogManager.GetCurrentClassLogger();
+        private static readonly string _keyname = "COM.AddIn";
 
         public AddinInstance()
             : base(
@@ -20,7 +21,10 @@ namespace Com.AddIn
         {
         }
 
-        public static string KeyName => "COM.AddIn";
+        public static string KeyName
+        {
+            get { return _keyname; }
+        }
 
         public static string AssemblyFullPath
         {

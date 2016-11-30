@@ -15,7 +15,8 @@ namespace WKCA.UnitTest
             AppInstance = aAppInstance;
         }
 
-        public Assembly TestAssembly { get; }
+        public Assembly TestAssembly { get; private set; }
+
         public IAppInstance AppInstance { get; private set; }
 
         public static TestHost CurrentInstance { get; private set; }

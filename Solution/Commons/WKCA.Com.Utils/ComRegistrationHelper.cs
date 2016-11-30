@@ -26,21 +26,21 @@ namespace WKCA.Com.Utils
         {
             ParseTaxPrepExeName(exeName);
             var productVersion = _productVersion ?? "0";
-            return string.Format($"{_productNameCode}{_productYear}{productVersion}");
+            return string.Format("{0}{1}{2}", _productNameCode, _productYear, productVersion);
         }
 
         public string GetApplicationNamespace(string exeName)
         {
             ParseTaxPrepExeName(exeName);
             return _productVersion != null
-                ? string.Format($"t{_productNameCode}_taxprep_{_productYear}-{_productVersion}")
-                : string.Format($"t{_productNameCode}_taxprep_{_productYear}");
+                ? string.Format("t{0}_taxprep_{1}-{2}", _productNameCode, _productYear, _productVersion)
+                : string.Format("t{0}_taxprep_{1}", _productNameCode, _productYear);
         }
 
         public string GetProgId(string exeName, string typeName)
         {
             var appNamespace = GetApplicationNamespace(exeName);
-            return string.Format($"Cch.{appNamespace}.{typeName}");
+            return string.Format("Cch.{0}.{1}", appNamespace, typeName);
         }
 
         private void ParseTaxPrepExeName(string exeName)
@@ -50,7 +50,7 @@ namespace WKCA.Com.Utils
             var match = taxPrepFileNameRegex.Match(exeName);
             if (!match.Success)
             {
-                throw new NotImplementedException($"Application {exeName} is not supported");
+                throw new NotImplementedException(string.Format("Application {0} is not supported", exeName));
             }
 
             _productNameCode = match.Groups["productCode"].Value;
