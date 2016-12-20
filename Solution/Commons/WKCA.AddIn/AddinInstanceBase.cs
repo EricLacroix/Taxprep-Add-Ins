@@ -33,7 +33,7 @@ namespace WKCA.AddIn
         //['{FBE92BC9-B889-49A3-A70D-FE4129071301}']
         public Guid Key
         {
-            get { return Key; }
+            get { return _key; }
         }
 
         public string Name { get; private set; }
