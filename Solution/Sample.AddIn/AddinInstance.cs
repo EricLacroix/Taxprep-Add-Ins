@@ -408,6 +408,12 @@ namespace WKCA
             ConfigurationDemo.ShowConfiguration(LConfig);
         }
 
+        private void DoCurrentUserPropsDemo()
+        {
+            var LNetProvider = (IAppNetworkProviderService)_appInstance;
+            CurrentUserPropertiesDemo.ShowCurrentUserProperties(LNetProvider);
+        }
+
         private void DoDiagDemo()
         {
             var LApp = (IAppTaxApplicationService) _appInstance;
@@ -648,6 +654,11 @@ namespace WKCA
                 itemConfig.ClickHandler = new AppNotifyHandler(DoConfigurationDemo);
                 itemConfig.Enabled = true;
                 itemConfig.Visible = true;
+
+                var itemCurUserProps = subMenu.AddItem("Current User Properties Demo...", true);
+                itemCurUserProps.ClickHandler = new AppNotifyHandler(DoCurrentUserPropsDemo);
+                itemCurUserProps.Enabled = true;
+                itemCurUserProps.Visible = true;
 
                 var itemUnlockCodeNetwork = subMenu.AddItem("Unlock code network", false);
                 itemUnlockCodeNetwork.ClickHandler = new AppNotifyHandler(DoShowUnlockCodeNetwork);

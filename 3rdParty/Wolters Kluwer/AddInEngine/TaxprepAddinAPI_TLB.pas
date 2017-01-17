@@ -12,7 +12,7 @@ unit TaxprepAddinAPI_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 08.06.2015 13:17:17 from Type Library described below.
+// File generated on 2016-12-22 09:27:12 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: tlb_D7.tlb (1)
@@ -84,6 +84,7 @@ const
   IID_IAppGroupInfo: TGUID = '{FE33CF79-4395-45A0-A5BD-B3D759653985}';
   IID_IAppTaxApplicationService: TGUID = '{464F2B17-0089-4E12-99E4-DC0F11AA6EA9}';
   IID_IAppTaxApplicationService1: TGUID = '{6CE793BD-4D79-4671-91F2-44DB3B4172FA}';
+  IID_IAppTaxApplicationService2: TGUID = '{81AE172D-A633-4665-A4BC-032CB9CC3E88}';
   IID_IAppClientFileManagerService: TGUID = '{4CC93007-AE1B-4419-AB3F-485D8F9A5910}';
   IID_IAppClientFile: TGUID = '{8CDECC10-42B1-46EF-8DA2-1E1CC2F5D4E9}';
   IID_IAddinDatabaseEnvAfterAcceptUserInput: TGUID = '{6076C17E-890F-4A91-9766-5D07E234A58B}';
@@ -129,6 +130,12 @@ const
   IID_IAddinCalcDiagnosticHandler: TGUID = '{80785E13-C93D-41BD-8759-7679E29693BE}';
   IID_IAddinDiagnosticClickHandler: TGUID = '{44087D3A-E50D-4D91-A795-84543820C568}';
   IID_IAppAddinCustomDiagnostic: TGUID = '{C64F2E0E-FA6A-4CA9-97FB-1DC933F8A1D0}';
+  IID_IAppClientFileManagerService1: TGUID = '{C00348D9-99B4-4566-8EDB-23552FC0F28D}';
+  IID_IAppClientFile2: TGUID = '{7836D7E4-880D-472F-AFB3-FDFFA801DB97}';
+  IID_IAppClientFile3: TGUID = '{51FE2E31-7815-426F-B894-25AF87D5107A}';
+  IID_IAppUser: TGUID = '{D2BC208F-E5D0-4C89-B0EF-978D94EE2036}';
+  IID_IAppNetworkProviderService: TGUID = '{1A403CB6-9B76-4A21-8A5D-916CF04B6E2B}';
+  IID_IAppServer: TGUID = '{3483991E-2D26-47FD-AFC1-BB99457C5707}';
 
 // *********************************************************************//
 // Declaration of Enumerations defined in Type Library                    
@@ -359,6 +366,7 @@ type
   IAppGroupInfo = interface;
   IAppTaxApplicationService = interface;
   IAppTaxApplicationService1 = interface;
+  IAppTaxApplicationService2 = interface;
   IAppClientFileManagerService = interface;
   IAppClientFile = interface;
   IAddinDatabaseEnvAfterAcceptUserInput = interface;
@@ -404,6 +412,12 @@ type
   IAddinCalcDiagnosticHandler = interface;
   IAddinDiagnosticClickHandler = interface;
   IAppAddinCustomDiagnostic = interface;
+  IAppClientFileManagerService1 = interface;
+  IAppClientFile2 = interface;
+  IAppClientFile3 = interface;
+  IAppUser = interface;
+  IAppNetworkProviderService = interface;
+  IAppServer = interface;
 
 // *********************************************************************//
 // Declaration of structures, unions and aliases.                         
@@ -441,6 +455,28 @@ type
     optCanRecalcAlways: WordBool;
     optCheckFiscalPeriod: WordBool;
     optOpenNoUpdateVersion: WordBool;
+  end;
+
+  AppClientFileNewOptions = packed record
+    optNewWithManager: WordBool;
+    optNewNamedFile: WordBool;
+    optNewNotRunCalc: WordBool;
+    optNewNotAddDocument: WordBool;
+    optForRoll: WordBool;
+    optNewPlanner: WordBool;
+    optNewNotCalcPersonalDiags: WordBool;
+  end;
+
+  AppClientFileSaveOptions = packed record
+    optSaveAll: WordBool;
+    optSaveHeaderOnly: WordBool;
+    optSaveSystemHeader: WordBool;
+    optSaveQuiet: WordBool;
+    optNoTaxDataEncrypt: WordBool;
+    optNoSaveDiagnostics: WordBool;
+    optSaveOnNewStream: WordBool;
+    optSaveBackup: WordBool;
+    optSaveAttachmentOnly: WordBool;
   end;
 
 
@@ -1239,6 +1275,17 @@ type
     function GetCustomDiagnostic: IAppAddinCustomDiagnostic; safecall;
     property OnAfterLanguageChange: IAddinNotifyHandler read Get_OnAfterLanguageChange write Set_OnAfterLanguageChange;
     property OnBeforeLanguageChange: IAddinNotifyHandler read Get_OnBeforeLanguageChange write Set_OnBeforeLanguageChange;
+  end;
+
+// *********************************************************************//
+// Interface: IAppTaxApplicationService2
+// Flags:     (0)
+// GUID:      {81AE172D-A633-4665-A4BC-032CB9CC3E88}
+// *********************************************************************//
+  IAppTaxApplicationService2 = interface(IAppTaxApplicationService1)
+    ['{81AE172D-A633-4665-A4BC-032CB9CC3E88}']
+    function IsTestMode: WordBool; safecall;
+    function IsTestModeWebServices: WordBool; safecall;
   end;
 
 // *********************************************************************//
@@ -2318,6 +2365,79 @@ type
                                       AApplicable: WordBool); safecall;
     procedure UnRegisterAddinDiagnostic(AGroupNo: Integer; const AName: WideString); safecall;
     procedure UnRegisterAllAddinDiagnostic; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppClientFileManagerService1
+// Flags:     (0)
+// GUID:      {C00348D9-99B4-4566-8EDB-23552FC0F28D}
+// *********************************************************************//
+  IAppClientFileManagerService1 = interface(IAppClientFileManagerService)
+    ['{C00348D9-99B4-4566-8EDB-23552FC0F28D}']
+    function NewClientFileEx(const AFilePath: WideString; AOptions: AppClientFileNewOptions; 
+                             out aClientFile: IAppClientFile): WordBool; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppClientFile2
+// Flags:     (0)
+// GUID:      {7836D7E4-880D-472F-AFB3-FDFFA801DB97}
+// *********************************************************************//
+  IAppClientFile2 = interface(IAppClientFile)
+    ['{7836D7E4-880D-472F-AFB3-FDFFA801DB97}']
+    function SaveEx(const AFilePath: WideString; ASaveOptions: AppClientFileSaveOptions): WordBool; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppClientFile3
+// Flags:     (0)
+// GUID:      {51FE2E31-7815-426F-B894-25AF87D5107A}
+// *********************************************************************//
+  IAppClientFile3 = interface(IAppClientFile2)
+    ['{51FE2E31-7815-426F-B894-25AF87D5107A}']
+    procedure Dispose; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppUser
+// Flags:     (0)
+// GUID:      {D2BC208F-E5D0-4C89-B0EF-978D94EE2036}
+// *********************************************************************//
+  IAppUser = interface(IUnknown)
+    ['{D2BC208F-E5D0-4C89-B0EF-978D94EE2036}']
+    function GetName: WideString; safecall;
+    function GetGroup: Integer; safecall;
+    function GetFirst_Name: WideString; safecall;
+    function GetLast_Name: WideString; safecall;
+    function GetEmail: WideString; safecall;
+    function GetChangePasswordAtNextLogon: WordBool; safecall;
+    function GetCannotChangePassword: WordBool; safecall;
+    function GetPasswordExpired: WordBool; safecall;
+    function GetDisabled: WordBool; safecall;
+    function GetLockedOut: WordBool; safecall;
+    function GetRemainingLockOutMinutes: Integer; safecall;
+    function GetPasswordChangedAt: TDateTime; safecall;
+    function GetLockedOutToDateTime: TDateTime; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppNetworkProviderService
+// Flags:     (0)
+// GUID:      {1A403CB6-9B76-4A21-8A5D-916CF04B6E2B}
+// *********************************************************************//
+  IAppNetworkProviderService = interface(IUnknown)
+    ['{1A403CB6-9B76-4A21-8A5D-916CF04B6E2B}']
+    function GetServer: IAppServer; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppServer
+// Flags:     (0)
+// GUID:      {3483991E-2D26-47FD-AFC1-BB99457C5707}
+// *********************************************************************//
+  IAppServer = interface(IUnknown)
+    ['{3483991E-2D26-47FD-AFC1-BB99457C5707}']
+    function Context: IAppUser; safecall;
   end;
 
 implementation
