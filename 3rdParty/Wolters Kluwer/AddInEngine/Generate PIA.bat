@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-set TlbImportCmd=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.0A\bin\NETFX 4.0 Tools\TlbImp.exe
+set TlbImportCmd=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\TlbImp.exe
 set TlbFileName=%~dp0TLB_D7.tlb
 set ParamNamespace=/namespace:TaxprepAddinAPI
 set ParamOutFileName=/out:"%~dp0\TaxprepAddinAPI.dll"

@@ -12,7 +12,7 @@ unit TaxprepAddinAPI_TLB;
 // ************************************************************************ //
 
 // PASTLWTR : 1.2
-// File generated on 2016-12-22 09:27:12 from Type Library described below.
+// File generated on 2017-02-10 14:01:06 from Type Library described below.
 
 // ************************************************************************  //
 // Type Lib: tlb_D7.tlb (1)
@@ -136,6 +136,10 @@ const
   IID_IAppUser: TGUID = '{D2BC208F-E5D0-4C89-B0EF-978D94EE2036}';
   IID_IAppNetworkProviderService: TGUID = '{1A403CB6-9B76-4A21-8A5D-916CF04B6E2B}';
   IID_IAppServer: TGUID = '{3483991E-2D26-47FD-AFC1-BB99457C5707}';
+  IID_IAppLoginProvider: TGUID = '{60B90DBA-9EF2-4895-B1FE-AC5C69956E5D}';
+  IID_IAppLoginProviderEventsService: TGUID = '{2B36F102-C2C3-45E7-AD6F-4867C9A119F1}';
+  IID_IAddinLogonEventHandler: TGUID = '{4C951F78-1B93-4CF3-BEC4-7B504F1CBDF2}';
+  IID_IAppNetworkProviderService1: TGUID = '{E2AEACC9-5F1E-4F54-8506-480301EA6327}';
 
 // *********************************************************************//
 // Declaration of Enumerations defined in Type Library                    
@@ -333,6 +337,32 @@ const
   Nunavut = $0000000D;
   InvalidJuris = $0000000E;
 
+// Constants for enum AppAccountValidation
+type
+  AppAccountValidation = TOleEnum;
+const
+  avUnknow = $00000000;
+  avOK = $00000001;
+  avOKPasswordChange = $00000002;
+  avNOServer = $00000003;
+  avCancel = $00000004;
+  avPasswordError = $00000005;
+  avAccountError = $00000006;
+  avNetPasswordError = $00000007;
+  avNetAccountError = $00000008;
+  avAccountNotUsable = $00000009;
+  avAccountOwner = $0000000A;
+  avCannotChangePassword = $0000000B;
+  avDisabled = $0000000C;
+  avUnderEdit = $0000000D;
+  avLockOut = $0000000E;
+  avApplicationLocked = $0000000F;
+  avReadOnly = $00000010;
+  avPasswordErrorMinLength = $00000011;
+  avGroupDisabled = $00000012;
+  avDenyRunOffline = $00000013;
+  avIniNotThere = $00000014;
+
 type
 
 // *********************************************************************//
@@ -418,6 +448,11 @@ type
   IAppUser = interface;
   IAppNetworkProviderService = interface;
   IAppServer = interface;
+  IAppLoginProvider = interface;
+  IAppLoginProviderEventsService = interface;
+  IAddinLogonEventHandler = interface;
+  IAppNetworkProviderService1 = interface;
+  IAppNetworkProviderService1Disp = dispinterface;
 
 // *********************************************************************//
 // Declaration of structures, unions and aliases.                         
@@ -2438,6 +2473,72 @@ type
   IAppServer = interface(IUnknown)
     ['{3483991E-2D26-47FD-AFC1-BB99457C5707}']
     function Context: IAppUser; safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppLoginProvider
+// Flags:     (0)
+// GUID:      {60B90DBA-9EF2-4895-B1FE-AC5C69956E5D}
+// *********************************************************************//
+  IAppLoginProvider = interface(IAppInstance1)
+    ['{60B90DBA-9EF2-4895-B1FE-AC5C69956E5D}']
+  end;
+
+// *********************************************************************//
+// Interface: IAppLoginProviderEventsService
+// Flags:     (0)
+// GUID:      {2B36F102-C2C3-45E7-AD6F-4867C9A119F1}
+// *********************************************************************//
+  IAppLoginProviderEventsService = interface(IUnknown)
+    ['{2B36F102-C2C3-45E7-AD6F-4867C9A119F1}']
+    function Get_UseTaxprepLoginDialog: WordBool; safecall;
+    procedure Set_UseTaxprepLoginDialog(Value: WordBool); safecall;
+    function Get_OnLogon: IAddinLogonEventHandler; safecall;
+    procedure Set_OnLogon(const Value: IAddinLogonEventHandler); safecall;
+    function Get_TaxprepUser: WideString; safecall;
+    procedure Set_TaxprepUser(const Value: WideString); safecall;
+    function Get_OnBeforeLogon: IAddinNotifyHandler; safecall;
+    procedure Set_OnBeforeLogon(const Value: IAddinNotifyHandler); safecall;
+    function ValidateUser(const ATaxprepUserName: WideString): AppAccountValidation; stdcall;
+    function Get_LastError: AppAccountValidation; safecall;
+    procedure Set_LastError(Value: AppAccountValidation); safecall;
+    property UseTaxprepLoginDialog: WordBool read Get_UseTaxprepLoginDialog write Set_UseTaxprepLoginDialog;
+    property OnLogon: IAddinLogonEventHandler read Get_OnLogon write Set_OnLogon;
+    property TaxprepUser: WideString read Get_TaxprepUser write Set_TaxprepUser;
+    property OnBeforeLogon: IAddinNotifyHandler read Get_OnBeforeLogon write Set_OnBeforeLogon;
+    property LastError: AppAccountValidation read Get_LastError write Set_LastError;
+  end;
+
+// *********************************************************************//
+// Interface: IAddinLogonEventHandler
+// Flags:     (0)
+// GUID:      {4C951F78-1B93-4CF3-BEC4-7B504F1CBDF2}
+// *********************************************************************//
+  IAddinLogonEventHandler = interface(IUnknown)
+    ['{4C951F78-1B93-4CF3-BEC4-7B504F1CBDF2}']
+    procedure Execute(const AUsername: WideString; const APassword: WideString); safecall;
+  end;
+
+// *********************************************************************//
+// Interface: IAppNetworkProviderService1
+// Flags:     (320) Dual OleAutomation
+// GUID:      {E2AEACC9-5F1E-4F54-8506-480301EA6327}
+// *********************************************************************//
+  IAppNetworkProviderService1 = interface(IAppNetworkProviderService)
+    ['{E2AEACC9-5F1E-4F54-8506-480301EA6327}']
+    function Get_NetworkOnline: WordBool; safecall;
+    property NetworkOnline: WordBool read Get_NetworkOnline;
+  end;
+
+// *********************************************************************//
+// DispIntf:  IAppNetworkProviderService1Disp
+// Flags:     (320) Dual OleAutomation
+// GUID:      {E2AEACC9-5F1E-4F54-8506-480301EA6327}
+// *********************************************************************//
+  IAppNetworkProviderService1Disp = dispinterface
+    ['{E2AEACC9-5F1E-4F54-8506-480301EA6327}']
+    property NetworkOnline: WordBool readonly dispid 201;
+    function GetServer: IAppServer; dispid 101;
   end;
 
 implementation

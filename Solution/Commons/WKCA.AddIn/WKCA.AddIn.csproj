@@ -72,6 +72,7 @@
     <Compile Include="AddinMarshaler.cs" />
     <Compile Include="Handlers\AppGetAdvertisingData.cs" />
     <Compile Include="Handlers\AppIdleHandler.cs" />
+    <Compile Include="Handlers\AppLogonValidateHandler.cs" />
     <Compile Include="Handlers\AppNotifyHandler.cs" />
     <Compile Include="Handlers\ClientFile\AfterChangeHeaderPropertyHandler.cs" />
     <Compile Include="Handlers\ClientFile\AfterChangeNameHandler.cs" />
